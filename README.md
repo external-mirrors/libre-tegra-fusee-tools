@@ -15,8 +15,25 @@ cd fusee-tools/payloads
 make -j1 ARCH=arm CROSS_COMPILE=arm-none-eabi-
 ```
 
-## Executing
-To execute the exploit plug in device via usb to host linux PC using usb 3 port (blue one) and enter RCM with method your device uses (usually by holding `power` + `volume up`).
+## Executing on Tegra 2
+Unlike newer generations, the Tegra 2 does not support the classic Fusee Gelee
+exploit. You should cd to /fusee-launcher-new and follow the instructions
+provided by launcher to obtain the SBK for your device.
+
+Note: Keep in mind that your device must not be bricked!
+
+### Loading bootloader on Tegra 2
+Any compatible bootloader can be uploaded into RAM and it will act as primary bootloader.
+To achieve this you should use nvflash provided in /utils and dumped SBK. For example:
+
+```
+./utils/nvflash_t20 --setbct --bct ./bct/olympus.bct --configfile ./utils/flash.cfg --bl u-boot-dtb-tegra.bin --sbk <your sbk> --sync
+```
+
+Where <your sbk> should be in form of 0xABCDABCD 4 times.
+
+## Executing on Tegra 3+
+To execute the exploit plug in device via USB to host Linux PC using usb 3 port (blue one) and enter RCM with method your device uses (usually by holding `power` + `volume up`).
 
 Fusee-tools provide scripts for 3 main actions:
  - dumping SBK
@@ -24,7 +41,7 @@ Fusee-tools provide scripts for 3 main actions:
  - loading bootloader into RAM
 
 All 3 scripts share similar set of keys:
- - `s` defines Tegra SOC generation. Valid values are `T20`, `T30` and `T114`. This key is mandatory. 
+ - `s` defines Tegra SOC generation. Valid values are `T30` and `T114`. This key is mandatory.
  - `t` defines path to and name of BCT. If not provided `current.bct` name is used at the root of fusee-tools folder.
  - `b` defines path to and name of bootloader. If not provided `u-boot-dtb-tegra.bin` name is used at the root of fusee-tools folder. 
 
