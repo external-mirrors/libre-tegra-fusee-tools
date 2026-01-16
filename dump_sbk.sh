@@ -20,4 +20,8 @@ if [ "$gen" = "" ]; then
     exit 3
 fi
 
-./fusee-launcher-new/fusee-launcher.py --tty ./payloads/out/"$gen"/dump_sbk_usb.bin
+if [ "$gen" = "T20" ]; then
+    ./fusee-launcher-new/fusee-launcher.py --tty --skip-smash ./payloads/out/"$gen"/dump_sbk_usb.bin
+else
+    ./fusee-launcher-new/fusee-launcher.py --tty ./payloads/out/"$gen"/dump_sbk_usb.bin
+fi
