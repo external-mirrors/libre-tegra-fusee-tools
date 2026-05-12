@@ -1,6 +1,6 @@
 [submodule "fusee-launcher-new"]
 	path = fusee-launcher-new
-	url = https://gitlab.com/grate-driver/fusee-launcher-new
+	url = https://codeberg.org/libre-tegra/fusee-launcher-new
 [submodule "tegrarcm"]
 	path = tegrarcm
-	url = https://gitlab.com/grate-driver/tegrarcm
+	url = https://codeberg.org/libre-tegra/tegrarcm
