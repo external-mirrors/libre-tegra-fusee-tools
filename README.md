@@ -13,7 +13,7 @@ apt install build-essential gcc-arm-none-eabi python3-usb git
 
 Open the terminal in the directory you want to contain fusee-tools and perform:
 ```
-git clone --recursive https://gitlab.com/grate-driver/fusee-tools.git
+git clone --recursive https://codeberg.org/libre-tegra/fusee-tools.git
 cd fusee-tools/payloads
 make -j1 ARCH=arm CROSS_COMPILE=arm-none-eabi-
 ```
