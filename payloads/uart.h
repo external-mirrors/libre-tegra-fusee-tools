@@ -34,6 +34,20 @@
 #define PINMUX_AUX_GMI_A17_0				(0x234)	/* T114 uart-d rx */
 #endif //T114
 
+#ifdef T148
+#define PINMUX_AUX_GPIO_PQ0_0 				(0x4f8)	/* T148 uart-a tx */
+#define PINMUX_AUX_GPIO_PQ1_0				(0x4f4)	/* T148 uart-a rx */
+
+#define PINMUX_AUX_GPIO_PF5_0 				(0x168)	/* T148 uart-b tx */
+#define PINMUX_AUX_GPIO_PF6_0				(0x164)	/* T148 uart-b rx */
+
+#define PINMUX_AUX_GPIO_PK0_0 				(0x174)	/* T148 uart-c tx */
+#define PINMUX_AUX_GPIO_PK1_0				(0x178)	/* T148 uart-c rx */
+
+#define PINMUX_AUX_GPIO_PO0_0 				(0x4b0)	/* T148 uart-d tx */
+#define PINMUX_AUX_GPIO_PO1_0				(0x4b4)	/* T148 uart-d rx */
+#endif //T148
+
 #define CAR_BASE					(0x60006000)
 #define CLK_SOURCE_PLLP					(0x0)
 
@@ -57,9 +71,14 @@
 /* word length of 8 */
 #define LCR_WD_SIZE_8					(0x3)
 
-#define UARTA_BASE					(0x70006000)
 #define CLK_RST_CONTROLLER_CLK_OUT_ENB_L_0 		(0x10)
 #define CLK_RST_CONTROLLER_RST_DEVICES_L_0 		(0x04)
+#define CLK_RST_CONTROLLER_CLK_OUT_ENB_H_0 		(0x14)
+#define CLK_RST_CONTROLLER_RST_DEVICES_H_0 		(0x08)
+#define CLK_RST_CONTROLLER_CLK_OUT_ENB_U_0		(0x18)
+#define CLK_RST_CONTROLLER_RST_DEVICES_U_0		(0x0c)
+
+#define UARTA_BASE					(0x70006000)
 #define CLK_RST_CONTROLLER_CLK_SOURCE_UARTA_0 		(0x178)
 #define UARTA_CAR_MASK 					(1 << 6)
 
@@ -67,15 +86,15 @@
 #define CLK_RST_CONTROLLER_CLK_SOURCE_UARTB_0 		(0x17c)
 #define UARTB_CAR_MASK 					(1 << 7)
 
+#define UARTC_BASE					(70006200)
+#define CLK_RST_CONTROLLER_CLK_SOURCE_UARTC_0		(0x1a0)
+#define UARTC_CAR_MASK					(1 << 23)
+
 #define UARTD_BASE					(0x70006300)
-#define CLK_RST_CONTROLLER_CLK_OUT_ENB_U_0		(0x18)
-#define CLK_RST_CONTROLLER_RST_DEVICES_U_0		(0x0c)
 #define CLK_RST_CONTROLLER_CLK_SOURCE_UARTD_0		(0x1c0)
 #define UARTD_CAR_MASK					(1 << 1)
 
 #define UARTE_BASE					(0x70006400)
-#define CLK_RST_CONTROLLER_CLK_OUT_ENB_U_0		(0x18)
-#define CLK_RST_CONTROLLER_RST_DEVICES_U_0		(0x0c)
 #define CLK_RST_CONTROLLER_CLK_SOURCE_UARTE_0		(0x1c4)
 #define UARTE_CAR_MASK					(1 << 2)
 
@@ -91,6 +110,12 @@
   #define CLK_RST_CONTROLLER_RST_DEVICES 		CLK_RST_CONTROLLER_RST_DEVICES_L_0
   #define UART_CAR_MASK 				UARTB_CAR_MASK
   #define CLK_RST_CONTROLLER_CLK_SOURCE_UART 		CLK_RST_CONTROLLER_CLK_SOURCE_UARTB_0
+#elif defined(UART_C_USE)
+  #define UART_BASE 					UARTC_BASE
+  #define CLK_RST_CONTROLLER_CLK_OUT_ENB 		CLK_RST_CONTROLLER_CLK_OUT_ENB_H_0
+  #define CLK_RST_CONTROLLER_RST_DEVICES 		CLK_RST_CONTROLLER_RST_DEVICES_H_0
+  #define UART_CAR_MASK 				UARTC_CAR_MASK
+  #define CLK_RST_CONTROLLER_CLK_SOURCE_UART 		CLK_RST_CONTROLLER_CLK_SOURCE_UARTC_0
 #elif defined(UART_D_USE)
   #define UART_BASE					UARTD_BASE
   #define CLK_RST_CONTROLLER_CLK_OUT_ENB		CLK_RST_CONTROLLER_CLK_OUT_ENB_U_0
@@ -147,6 +172,18 @@ static void uart_init() {
 #elif defined(T114) && defined(UART_D_USE)
 		reg_write(PINMUX_BASE, PINMUX_AUX_GMI_A16_0, 0); /* tx */
 		reg_write(PINMUX_BASE, PINMUX_AUX_GMI_A17_0, 0); /* rx */
+#elif defined(T148) && defined(UART_A_USE)
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PQ0_0, 0); /* tx */
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PQ1_0, 0b00101000); /* rx */
+#elif defined(T148) && defined(UART_B_USE)
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PF5_0, 0); /* tx */
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PF6_0, 0b00100000); /* rx */
+#elif defined(T148) && defined(UART_C_USE)
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PK0_0, 0); /* tx */
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PK1_0, 0b00100000); /* rx */
+#elif defined(T148) && defined(UART_D_USE)
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PO0_0, 0); /* tx */
+		reg_write(PINMUX_BASE, PINMUX_AUX_GPIO_PO1_0, 0b00101000); /* rx */
 #else
     #error No UART specified
 #endif

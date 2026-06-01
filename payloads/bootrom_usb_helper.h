@@ -19,6 +19,10 @@
 #elif defined(T124)
 	#define write_ep1_in_sync (0x001065c0 + 1)
 	#define usb_reset_ep1 (0x00106092 + 1)
+#elif defined(T148)
+    //TODO
+	#define write_ep1_in_sync (0 + 1)
+	#define usb_reset_ep1 (0 + 1)
 #else
 	#error No SoC specified
 #endif

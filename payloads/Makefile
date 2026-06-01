@@ -27,9 +27,11 @@ override CFLAGS += \
 LDFLAGS ?= -nostdlib --gc-sections
 #-Map=$(basename $@).map
 
-all: T20 T30 T114
+all: T20 T30 T114 T124 T148
 
-T20:
+T20: T20_B
+
+T20_B:
 	$(MAKE) \
 		SOC=T20 \
 		UART=B \
@@ -79,11 +81,34 @@ T124:
 	$(MAKE) \
 		SOC=T124 \
 		ENTRY_ADDR=0x4000E000 \
+		payloads
+
+T148: T148_A T148_B T148_C T148_D
+
+T148_A:
+	$(MAKE) \
+		SOC=T148 \
+		UART=A \
+		ENTRY_ADDR=0x4000E000 \
+		payloads payloads_uart
+		
+T148_B:
+	$(MAKE) \
+		SOC=T148 \
+		UART=B \
+		ENTRY_ADDR=0x4000E000 \
+		payloads payloads_uart
+				
+T148_C:
+	$(MAKE) \
+		SOC=T148 \
+		UART=C \
+		ENTRY_ADDR=0x4000E000 \
 		payloads payloads_uart
 
-T124_D:
+T148_D:
 	$(MAKE) \
-		SOC=T124 \
+		SOC=T148 \
 		UART=D \
 		ENTRY_ADDR=0x4000E000 \
 		payloads payloads_uart
